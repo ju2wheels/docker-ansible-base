@@ -1,13 +1,14 @@
 FROM       linuxmintd/mint20.1-amd64
 MAINTAINER Julio Lajara <ju2wheels@gmail.com>
 
-ENV DEBIAN_FRONTEND    "noninteractive"
-ENV LANG               "en_US.UTF-8"
-ENV LANGUAGE           "en_US.UTF-8"
-ENV LC_ALL             "en_US.UTF-8"
-ENV PATH               "/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-ENV PYCURL_SSL_LIBRARY "openssl"
-ENV PYTHONUNBUFFERED   "1"
+ENV DEBIAN_FRONTEND         "noninteractive"
+ENV LANG                    "en_US.UTF-8"
+ENV LANGUAGE                "en_US.UTF-8"
+ENV LC_ALL                  "en_US.UTF-8"
+ENV PATH                    "/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ENV PYCURL_SSL_LIBRARY      "openssl"
+ENV PYTHONDONTWRITEBYTECODE "1"
+ENV PYTHONUNBUFFERED        "1"
 
 RUN apt-get update                               && \
     apt-get -y dist-upgrade                      && \
@@ -25,7 +26,8 @@ RUN apt-get update                               && \
                        python3                      \
                        python3-apt                  \
                        python3-dev                  \
-                       rsync                     && \
+                       rsync                        \
+                       sudo                      && \
     apt-get --no-install-recommends                 \
             -y install python3-pip                  \
                        python3-setuptools        && \
@@ -35,6 +37,9 @@ RUN apt-get update                               && \
     python3 -m pip install --force-reinstall        \
                            --upgrade                \
                            --user setuptools     && \
+    python3 -m pip install --force-reinstall        \
+                           --upgrade                \
+                           --user wheel          && \
     python3 -m pip install --force-reinstall        \
                  --upgrade                          \
                  --user "ansible-base == 2.10.*" && \
